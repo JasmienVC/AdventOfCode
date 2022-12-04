@@ -20,6 +20,43 @@ def opponent_moves(input)
   opponent
 end
 
+def move_score_two(input)
+  counter = 0
+  moves = moves(input)
+  moves.each do |move|
+    counter += 3 if move == "Y"
+    counter += 6 if move == "Z"
+  end
+  counter
+end
+
+def round_outcome_two(input)
+  counter = 0
+  moves = moves(input)
+  opponent_moves = opponent_moves(input)
+  moves.each_with_index do |move, i|
+    case move
+    when "X"
+      counter += 3 if opponent_moves[i] == "A"
+      counter += 1 if opponent_moves[i] == "B"
+      counter += 2 if opponent_moves[i] == "C"
+    when "Y"
+      counter += 1 if opponent_moves[i] == "A"
+      counter += 2 if opponent_moves[i] == "B"
+      counter += 3 if opponent_moves[i] == "C"
+    when "Z"
+      counter += 2 if opponent_moves[i] == "A"
+      counter += 3 if opponent_moves[i] == "B"
+      counter += 1 if opponent_moves[i] == "C"
+    end
+  end
+  counter
+end
+
+def total_score_two(input)
+  puts move_score_two(input) + round_outcome_two(input)
+end
+
 def shape_score(input)
   counter = 0
   moves = moves(input)
@@ -58,4 +95,4 @@ def total_score(input)
   total
 end
 
-puts total_score(list)
+total_score_two(list)
