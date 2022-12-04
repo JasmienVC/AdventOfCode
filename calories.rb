@@ -29,4 +29,13 @@ def calories(input)
   counter
 end
 
-puts calories(list)
+def top_three(input)
+  my_array = array(input)
+  calories = []
+  my_array.each do |sub_array|
+    calories << sub_array.sum
+  end
+  puts calories.max(3).sum
+end
+
+top_three(list)
