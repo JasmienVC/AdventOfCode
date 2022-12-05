@@ -36,7 +36,26 @@ def moves(input)
     array << match_data[6].to_i
     my_array << array
   end
-  p my_array
+  my_array
 end
 
-moves(list)
+def actions(input)
+  moves = moves(input)
+  stacks = arrays(input)
+  stacks.each { |stack| stack.reverse! }
+
+  moves.each do |move|
+    amount = move[0]
+    from = move[1]
+    to = move[2]
+    if amount <= stacks[from - 1].length
+      stacks[to - 1] << stacks[from - 1].pop(amount).reverse!
+    else
+      stacks[to - 1] << stacks[from - 1].pop(stacks[from - 1].length).reverse!
+    end
+  end
+  stacks.each { |stack| stack.reverse! }
+  p stacks
+end
+
+actions(list)
