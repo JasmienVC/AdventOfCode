@@ -2,8 +2,6 @@ require 'open-uri'
 
 list = URI.open('input5.txt').read
 
-moves = list.split(/\n\n/)[1]
-
 def arrays(input)
   stacks = input.split(/\n\n/)[0]
   all = [[], [], [], [], [], [], [], [], []]
@@ -24,7 +22,21 @@ def arrays(input)
     array.pop()
     array.delete(" ")
   end
-  p all
+  all
 end
 
-arrays(list)
+def moves(input)
+  moves = input.split(/\n\n/)[1].split(/\n/)
+  my_array = []
+  moves.each do |move|
+    array = []
+    match_data = move.match(/^([a-z]+) (\d+) ([a-z]+) (\d+) ([a-z]+) (\d+)$/)
+    array << match_data[2].to_i
+    array << match_data[4].to_i
+    array << match_data[6].to_i
+    my_array << array
+  end
+  p my_array
+end
+
+moves(list)
