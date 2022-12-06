@@ -48,7 +48,8 @@ def actions(input)
     amount = move[0]
     from = move[1]
     to = move[2]
-    stacks[from - 1].pop(amount).reverse!.each { |letter| stacks[to - 1] << letter }
+    # stacks[from - 1].pop(amount).reverse!.each { |letter| stacks[to - 1] << letter }
+    stacks[from - 1].pop(amount).each { |letter| stacks[to - 1] << letter }
   end
   stacks
 end
@@ -57,7 +58,7 @@ def top(input)
   stacks = actions(input)
   top_array = []
   stacks.each { |stack| top_array << stack[-1] }
-  p top_array.join
+  top_array.join
 end
 
-top(list)
+puts top(list)
