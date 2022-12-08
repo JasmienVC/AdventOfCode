@@ -9,6 +9,34 @@ def check(arr, x)
   end
 end
 
+def increase(arr, j)
+  if j == arr.length - 1
+    view = 0
+  else
+    i = 1
+    while i < arr.length - 1 - j
+      break if arr[j + i] >= arr[j]
+      i += 1
+    end
+    view = i
+  end
+  view
+end
+
+def decrease(arr, j)
+  if j.zero?
+    view = 0
+  else
+    i = 1
+    while i < j
+      break if arr[j - i] >= arr[j]
+      i += 1
+    end
+    view = i
+  end
+  view
+end
+
 def rows(input)
   strings = input.split("\n")
   rows = []
@@ -50,7 +78,25 @@ def visible(input)
       counter += 1 if check(left, tree) || check(right, tree) || check(up, tree) || check(down, tree)
     end
   end
-  p counter
+  counter
 end
 
-visible(list)
+def score(input)
+  tree_rows = rows(input)
+  tree_columns = columns(input)
+  scores = []
+  tree_rows.each_with_index do |tree_row, j|
+    tree_row.each_with_index do |tree, i|
+      tree_column = tree_columns[i]
+      left = decrease(tree_row, i)
+      right = increase(tree_row, i)
+      up = decrease(tree_column, j)
+      down = increase(tree_column, j)
+      score = up * down * left * right
+      scores << score
+    end
+  end
+  p scores.max
+end
+
+score(list)
