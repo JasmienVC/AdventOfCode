@@ -23,53 +23,41 @@ def directory_hash(input)
   my_hash
 end
 
-def iterate(input)
+def find_element(input, key)
+  my_hash = directory_hash(input)
+  my_hash["dir #{key}"]
+end
+
+def iterate(input, arr)
+  numbers ||= []
+  arr.each do |el|
+    next if el.include?('cd')
+
+    if el.include?('dir')
+      key = el.split.last
+      sub_arr = find_element(input, key)
+      dir_numbers = numbers
+      dir_numbers << iterate(input, sub_arr)
+      numbers << dir_numbers
+    else
+      match_data = el.match(/(\d+)/)
+      numbers << match_data[1].to_i
+    end
+    p numbers
+  end
+  numbers
+end
+
+def sum(input)
   sum = 0
   my_hash = directory_hash(input)
   my_hash.each_value do |value|
     counter = 0
-    value.each do |el|
-      next if el.include?("cd")
-      break if el.include?("dir")
-
-      match_data = el.match(/(\d+)/)
-      counter += match_data[1].to_i
-    end
+    numbers = iterate(input, value)
+    counter += numbers.sum
     sum += counter if counter <= 100_000
   end
   sum
 end
 
-# def iterate(hash)
-#   counter_array = []
-#   hash.each_value do |value|
-#     counter = 0
-#     value.each do |element|
-#       if element.include?("cd")
-#         next
-#       elsif element.include?("dir")
-#         key = element.split.last
-#         sub_hash = { key => hash[key] }
-#         p sub_hash
-#         iterate(sub_hash)
-#       else
-#         match_data = element.match(/(\d+)/)
-#         counter += match_data[1].to_i
-#       end
-#       counter_array << counter
-#     end
-#   end
-#   counter_array
-# end
-
-# def sum(input)
-#   sum = 0
-#   my_hash = directory_hash(input)
-#   counter_array = iterate(my_hash)
-#   counter_array.each do |number|
-#     sum += number if number <= 100_000
-#   end
-#   sum
-# end
-
-iterate(list)
+sum(list)
