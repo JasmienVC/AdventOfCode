@@ -28,16 +28,15 @@ def find_element(input, key)
   my_hash["dir #{key}"]
 end
 
-def iterate(input, arr)
-  numbers ||= []
+def iterate(input, arr, number_arr)
+  numbers = number_arr
   arr.each do |el|
     next if el.include?('cd')
 
     if el.include?('dir')
       key = el.split.last
       sub_arr = find_element(input, key)
-      dir_numbers = numbers
-      dir_numbers << iterate(input, sub_arr)
+      numbers = iterate(input, sub_arr)
       numbers << dir_numbers
     else
       match_data = el.match(/(\d+)/)
