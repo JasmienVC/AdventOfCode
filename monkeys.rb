@@ -1,20 +1,19 @@
 require 'open-uri'
-
 list = URI.open('input11.txt').read
 
 def item_collection(input)
   monkeys = input.split(/\n\n/)
   collection = []
   monkeys.each do |monkey|
-    check = monkey.split(/\n/)
-    items = check[1].split(',')
-    first_item = items[0].split(/\s/).last.to_i
-    items.shift
-    items.map! do |item|
+    items = monkey.split(/\n/)[1]
+    item_arr = items.split(',')
+    first_item = item_arr[0].split(/\s/).last.to_i
+    item_arr.shift
+    item_arr.map! do |item|
       item.strip.to_i
     end
-    items.unshift(first_item)
-    collection << items
+    item_arr.unshift(first_item)
+    collection << item_arr
   end
   collection
 end
@@ -63,19 +62,13 @@ def false_option(input)
   false_options
 end
 
-# def test(input, result, index)
-#   true_options = true_option(input)
-#   false_options = false_option(input)
-#   dividers = divider(input)
-#   collection = item_collection(input)
-#   if (result % dividers[index]).zero?
-#     collection[true_options[index]] << result
-#   else
-#     collection[false_options[index]] << result
-#   end
-#   collection[index].delete(result)
-#   p collection
-# end
+def remove_zeros(number)
+  my_array = number.to_s.chars.map(&:to_i)
+  while my_array.last.zero?
+    my_array.pop
+  end
+  my_array.join.to_i
+end
 
 def round(input)
   collection = item_collection(input)
@@ -83,7 +76,6 @@ def round(input)
   true_options = true_option(input)
   false_options = false_option(input)
   dividers = divider(input)
-
   value_array = []
   20.times do
     sub_array = []
@@ -117,38 +109,17 @@ end
 
 def count(input)
   value_array = round(input)
-  monkey_0 = 0
-  monkey_1 = 0
-  monkey_2 = 0
-  monkey_3 = 0
-  monkey_4 = 0
-  monkey_5 = 0
-  monkey_6 = 0
-  monkey_7 = 0
-  values = []
-
-  value_array.each do |round|
-    monkey_0 += round[0]
-    monkey_1 += round[1]
-    monkey_2 += round[2]
-    monkey_3 += round[3]
-    monkey_4 += round[4]
-    monkey_5 += round[5]
-    monkey_6 += round[6]
-    monkey_7 += round[7]
+  monkey_array = [0, 0, 0, 0, 0, 0, 0, 0]
+  i = 0
+  while i < monkey_array.length
+    value_array.each do |round|
+      monkey_array[i] += round[i]
+    end
+    i += 1
   end
-  values << monkey_0
-  values << monkey_1
-  values << monkey_2
-  values << monkey_3
-  values << monkey_4
-  values << monkey_5
-  values << monkey_6
-  values << monkey_7
-  max = values.max
-  values.delete(max)
-  second = values.max
-  p max * second
+  max = monkey_array.max
+  monkey_array.delete(max)
+  p max * monkey_array.max
 end
 
 count(list)
